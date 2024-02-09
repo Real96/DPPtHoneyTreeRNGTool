@@ -111,5 +111,8 @@ This tool will let you RNG abuse tree encounter slots in DPPt games
   </tr>
 </table>
 
+## Note
+Spreading honey on the last tree you spread it on will cause a 90% chance of getting the same encounter as last time. Be sure to switch trees before attempting the RNG abuse.
+
 ## Compiling
 `g++ DPPtHoneyTreeRNGTool.cpp -o DPPtHoneyTreeRNGTool.exe -std=c++20 --static`
