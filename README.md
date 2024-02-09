@@ -1,4 +1,4 @@
-# DPPtHoneyTreeRNGTool <img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/68b62621-9fd4-430e-90a6-32547b9c5fe5" width="32" title="honey_tree_bigger">
+# DPPtHoneyTreeRNGTool <img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/68b62621-9fd4-430e-90a6-32547b9c5fe5" width="32" title="honey_tree">
 
 This tool will let you RNG abuse tree encounter slots in DPPt games
 
