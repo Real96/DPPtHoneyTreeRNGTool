@@ -1,8 +1,7 @@
-# DPPtHoneyTreeRNGTool <img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/68b62621-9fd4-430e-90a6-32547b9c5fe5" width="32" title="honey_tree">
-
+# DPPtHoneyTreeRNGTool <img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/68b62621-9fd4-430e-90a6-32547b9c5fe5" width="32" title="Honey Tree">
 This tool will let you RNG abuse tree encounter slots in DPPt games
 
-## Honey tree encounter slots tables ![honey](https://github.com/PokeAPI/sprites/blob/master/sprites/items/honey.png)
+## Honey tree encounter slots tables <img src="https://github.com/PokeAPI/sprites/blob/master/sprites/items/honey.png" title="Honey">
 <table>
   <tr align="center">
     <td><img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/cae6e50d-5d3b-4beb-bdea-c3bdfae8940a" title="D" height="10">
