@@ -180,7 +180,7 @@ bool isWantedEncounterSlotCheck(uint32_t seed, short table, short index) {
 }
 
 void findTreePokemon(short tableIndex, short slotIndex, const bool munchlaxTreeFlag, uint32_t seed, unsigned long advances) {
-    for (bool found = false; !found; advances++) {
+    for (;; advances++) {
         uint32_t tempSeed = LCRNG(seed);
 
         if (!isWantedTableCheck(tempSeed, tableIndex, munchlaxTreeFlag)) {
@@ -192,8 +192,7 @@ void findTreePokemon(short tableIndex, short slotIndex, const bool munchlaxTreeF
 
         if (isWantedEncounterSlotCheck(tempSeed, tableIndex, slotIndex)) {
             printf("\n\nTarget seed: %08X | Target advances: %lu\n\n------------------------------------------------\n\n", seed, advances);
-            found = true;
-            break;
+            return;
         }
 
         advanceRNG(seed);
@@ -201,7 +200,6 @@ void findTreePokemon(short tableIndex, short slotIndex, const bool munchlaxTreeF
 }
 
 void findTreeSeed(short tableIndex, short slotIndex, const bool munchlaxTreeFlag) {
-    bool foundFalg = false;
     const short hour = 24, maxDelay = 10000;
     short minDelay;
     unsigned long maxAdvances;
@@ -209,9 +207,9 @@ void findTreeSeed(short tableIndex, short slotIndex, const bool munchlaxTreeFlag
     sanitizeInput<short>("Insert the min delay: ", minDelay, 600, 9999);
     sanitizeInput<unsigned long>("Insert the max advances: ", maxAdvances, 1, ULONG_MAX);
 
-    for (short ab = 0; ab < 256 && !foundFalg; ab++) {
-        for (short cd = 0; cd < hour && !foundFalg; cd++) {
-            for (short efgh = minDelay; efgh < maxDelay && !foundFalg; efgh++) {
+    for (short ab = 0; ab < 256; ab++) {
+        for (short cd = 0; cd < hour; cd++) {
+            for (short efgh = minDelay; efgh < maxDelay; efgh++) {
                 uint32_t seed = ((ab << 24) | (cd << 16)) + efgh;
                 uint32_t tempSeed = seed;
 
@@ -226,9 +224,8 @@ void findTreeSeed(short tableIndex, short slotIndex, const bool munchlaxTreeFlag
                     tempSeed2 = LCRNG(tempSeed2);
 
                     if (isWantedEncounterSlotCheck(tempSeed2, tableIndex, slotIndex)) {
-                        foundFalg = true;
                         printf("\n\nTarget seed: %08X | Target advances: %lu\n\n------------------------------------------------\n\n", seed, advances);
-                        break;
+                        return;
                     }
 
                     advanceRNG(tempSeed);
