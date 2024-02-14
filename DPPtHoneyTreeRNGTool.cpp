@@ -188,7 +188,7 @@ void findTreePokemon(short tableIndex, short slotIndex, const bool munchlaxTreeF
             continue;
         }
 
-        tempSeed = LCRNG(tempSeed);
+        advanceRNG(tempSeed);
 
         if (isWantedEncounterSlotCheck(tempSeed, tableIndex, slotIndex)) {
             printf("\n\nTarget seed: %08X | Target advances: %lu\n\n------------------------------------------------\n\n", seed, advances);
@@ -221,7 +221,7 @@ void findTreeSeed(short tableIndex, short slotIndex, const bool munchlaxTreeFlag
                         continue;
                     }
 
-                    tempSeed2 = LCRNG(tempSeed2);
+                    advanceRNG(tempSeed2);
 
                     if (isWantedEncounterSlotCheck(tempSeed2, tableIndex, slotIndex)) {
                         printf("\n\nTarget seed: %08X | Target advances: %lu\n\n------------------------------------------------\n\n", seed, advances);
