@@ -1,18 +1,14 @@
 #include <iostream>
-#include <string>
+#include <math.h>
 #include <string_view>
 #include <array>
 #include <regex>
-#include <cstring>
-#include <math.h>
-
-#define HONEY_TREE_MAX (21)
 
 using namespace std;
 
-bool sanitizeYesNoInput(const string &output) {
+bool sanitizeYesNoInput(const string output) {
     string yesNoAnswer;
-    regex yesNoRegex("^[nyNY]$");
+    const regex yesNoRegex("^[nyNY]$");
 
     while ((cout << output) && (!(cin >> yesNoAnswer) || !regex_match(yesNoAnswer, yesNoRegex))) {
         cin.clear();
@@ -23,14 +19,14 @@ bool sanitizeYesNoInput(const string &output) {
 }
 
 template <typename T>
-void sanitizeInput(const string &output, T &index, T lowLimit, T highLimit) {
-    while ((cout << output) && (!(cin >> index) || (index < lowLimit || index > highLimit))) {
+void sanitizeInput(const string output, T &value, const T lowLimit, const T highLimit) {
+    while ((cout << output) && (!(cin >> value) || (value < lowLimit || value > highLimit))) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 }
 
-const uint32_t getIDsInput(const bool sidFlag) {
+uint32_t getIDsInput(const bool sidFlag) {
     uint16_t tid, sid = 0;
     sanitizeInput<uint16_t>("Insert your TID: ", tid, 0, 65535);
 
@@ -46,43 +42,40 @@ void printMunchlaxTreeLocations() {
         return;
     }
 
-    static constexpr array<string_view, HONEY_TREE_MAX> honeyTreeLocationNames{ "Route 205 (South)", "Route 205 (North)", "Route 206", "Route 207",
-                                                                                "Route 208", "Route 209", "Route 210 (South)", "Route 210 (North)",
-                                                                                "Route 211", "Route 212 (North)", "Route 212 (South)", "Route 213",
-                                                                                "Route 214", "Route 215", "Route 218", "Route 221", "Route 222",
-                                                                                "Valley Windworks", "Eterna Forest", "Fuego Ironworks", "Floaroma Meadow" };
+    static constexpr array<string_view, 21> honeyTreeLocationNames{ "Route 205 (South)", "Route 205 (North)", "Route 206", "Route 207",
+                                                                    "Route 208", "Route 209", "Route 210 (South)", "Route 210 (North)",
+                                                                    "Route 211", "Route 212 (North)", "Route 212 (South)", "Route 213",
+                                                                    "Route 214", "Route 215", "Route 218", "Route 221", "Route 222",
+                                                                    "Valley Windworks", "Eterna Forest", "Fuego Ironworks", "Floaroma Meadow" };
 
     const bool knownSID = sanitizeYesNoInput("Do you know your SID? (y/n) ");
     const short treeLimitNumber = knownSID ? 4 : 2;
-    const uint32_t ids = getIDsInput(knownSID);
+    uint32_t ids = getIDsInput(knownSID);
     static array<uint8_t, 4> treeLocationIndexes{};
 
-    for (short i = treeLimitNumber, j = 0; i >= 0; i--, j += 8) {
-        treeLocationIndexes[i] = ((ids >> j) & 0xFF) % HONEY_TREE_MAX;
+    for (short i = 0; i < treeLimitNumber; i++, ids >>= 8) {
+        treeLocationIndexes[i] = (ids & 0xFF) % 21;
+
+        for (short j = 0; j < i; j++) {
+            if (treeLocationIndexes[j] == treeLocationIndexes[i]) {
+                treeLocationIndexes[i]++;
+                treeLocationIndexes[i] %= 21;
+            }
+        }
     }
 
     cout << "\n\nMunchlax tree locations:\n\n";
 
-    for (short i = 1; i < treeLimitNumber; i++) {
-        for (short j = 0; j < i; j++) {
-            if (treeLocationIndexes[j] == treeLocationIndexes[i]) {
-                treeLocationIndexes[i]++;
-
-                if (treeLocationIndexes[i] >= HONEY_TREE_MAX) {
-                    treeLocationIndexes[i] = 0;
-                }
-            }
-        }
-
-        cout << honeyTreeLocationNames[treeLocationIndexes[i - 1]] << "\n";
+    for (short i = 0; i < treeLimitNumber; i++) {
+        cout << honeyTreeLocationNames[treeLocationIndexes[i]] << "\n";
     }
 
-    cout << honeyTreeLocationNames[treeLocationIndexes[treeLimitNumber - 1]] << "\n\n\n";
+    cout << "\n\n";
 }
 
 bool sanitizeGameVersionInput() {
     string gameVersion;
-    regex gameVersionRegex("^(dp|DP|Dp|dP|pt|Pt|PT)$");
+    const regex gameVersionRegex("^(dp|DP|Dp|dP|pt|Pt|PT)$");
 
     while ((cout << "Game version? (dp/pt) ") && (!(cin >> gameVersion) || !regex_match(gameVersion, gameVersionRegex))) {
         cin.clear();
@@ -94,7 +87,7 @@ bool sanitizeGameVersionInput() {
     return gameVersion == "PT";
 }
 
-void printTableSlotIndexes(bool munchlaxFlag) {
+void printTableSlotIndexes(const bool munchlaxFlag) {
     const bool ptFlag = sanitizeGameVersionInput();
     static constexpr array<string_view, 6> pokemonDPNames0{ "Wurmple (40%)", "Silcoon (D) / Cascoon (P) (20%)", "Combee (20%)", "Burmy (10%)", "Cherubi (5%)", "Aipom (5%)" };
     static constexpr array<string_view, 6> pokemonDPNames1{ "Combee (40%)", "Burmy (20%)", "Cherubi (20%)", "Aipom (10%)", "Heracross (5%)", "Wurmple (5%)" };
@@ -122,18 +115,19 @@ void printTableSlotIndexes(bool munchlaxFlag) {
     cout << "\n";
 }
 
-void getTreeTableSlotInput(short &tableIndex, short &slotIndex, const bool munchlaxTreeFlag) {
-    printTableSlotIndexes(munchlaxTreeFlag);
-    sanitizeInput<short>("Insert the wanted table index: ", tableIndex, 1, munchlaxTreeFlag ? 3 : 2);
+void getTreeTableSlotInput(short &table, short &slot, bool &munchlaxFlag) {
+    munchlaxFlag = sanitizeYesNoInput("Is it a Munchlax Tree? (y/n) ");
+    printTableSlotIndexes(munchlaxFlag);
+    sanitizeInput<short>("Insert the wanted table index: ", table, 1, munchlaxFlag ? 3 : 2);
 
-    if (tableIndex != 3) {
-        sanitizeInput<short>("Insert the wanted encounter slot: ", slotIndex, 1, 6);
+    if (table != 3) {
+        sanitizeInput<short>("Insert the wanted encounter slot: ", slot, 1, 6);
     }
 }
 
 void sanitizeHexInput(uint32_t &seed) {
     string stringSeed;
-    regex hexRegex("^[0-9a-fA-F]{1,8}$");
+    const regex hexRegex("^[0-9a-fA-F]{1,8}$");
 
     while ((cout << "Insert the initial seed: ") && (!(cin >> stringSeed) || !regex_match(stringSeed, hexRegex))) {
         cin.clear();
@@ -152,11 +146,11 @@ void getRNGInput(uint32_t &seed, unsigned long &advances, bool &knownSeedFlag) {
     }
 }
 
-uint32_t LCRNG(uint32_t seed) {
+uint32_t LCRNG(const uint32_t seed) {
     return 0x41C64E6D * seed + 0x6073;
 }
 
-uint32_t advanceRNG(uint32_t &seed, unsigned long n = 1) {
+uint32_t advanceRNG(uint32_t &seed, const unsigned long n = 1) {
     for (unsigned long i = 0; i < n; i++) {
         seed = LCRNG(seed);
     }
@@ -164,39 +158,39 @@ uint32_t advanceRNG(uint32_t &seed, unsigned long n = 1) {
     return seed;
 }
 
-uint16_t getHighSeed(uint32_t seed) {
+uint16_t getHighSeed(const uint32_t seed) {
     return seed >> 16;
 }
 
-bool isWantedTableCheck(uint32_t &seed, short index, const bool munchlax) {
+bool isWantedTableCheck(uint32_t &seed, const short table, const bool munchlax) {
     static constexpr array<short, 5> tableThresholds{ 0, 1, 10, 30, 100 };
-    short tableRangeIndex = index == 3 ? 1 : 5 - index;
+    const short tableRangeIndex = table == 3 ? 1 : 5 - table;
 
-    return trunc(getHighSeed(advanceRNG(seed)) / 656) >= tableThresholds[tableRangeIndex - 1] && trunc(getHighSeed(seed) / 656) < tableThresholds[tableRangeIndex];
+    return getHighSeed(advanceRNG(seed)) / 656 >= tableThresholds[tableRangeIndex - 1] && getHighSeed(seed) / 656 < tableThresholds[tableRangeIndex];
 }
 
-bool isWantedEncounterSlotCheck(uint32_t seed, short table, short index) {
+bool isWantedEncounterSlotCheck(uint32_t seed, const short table, const short slot) {
     static constexpr array<short, 7> encounterSlotThresholds{ 100, 60, 40, 20, 10, 5, 0 };
 
-    return table == 3 || (trunc(getHighSeed(advanceRNG(seed)) / 656) >= encounterSlotThresholds[index] && trunc(getHighSeed(seed) / 656) < encounterSlotThresholds[index - 1]);
+    return table == 3 || (getHighSeed(advanceRNG(seed) / 656) >= encounterSlotThresholds[slot] && getHighSeed(seed) / 656 < encounterSlotThresholds[slot - 1]);
 }
 
-void findTreePokemon(short tableIndex, short slotIndex, const bool munchlaxTreeFlag, uint32_t seed, unsigned long advances) {
+void findTreePokemon(const short table, const short slot, const bool munchlaxFlag, uint32_t seed, unsigned long advances) {
     for (;; advances++, advanceRNG(seed)) {
         uint32_t tempSeed = seed;
 
-        if (!isWantedTableCheck(tempSeed, tableIndex, munchlaxTreeFlag)) {
+        if (!isWantedTableCheck(tempSeed, table, munchlaxFlag)) {
             continue;
         }
 
-        if (isWantedEncounterSlotCheck(tempSeed, tableIndex, slotIndex)) {
+        if (isWantedEncounterSlotCheck(tempSeed, table, slot)) {
             printf("\n\nTarget seed: %08X | Target advances: %lu\n\n------------------------------------------------\n\n", seed, advances);
             return;
         }
     }
 }
 
-void findTreeSeed(short tableIndex, short slotIndex, const bool munchlaxTreeFlag) {
+void findTreeSeed(const short table, const short slot, const bool munchlaxFlag) {
     const short hour = 24, maxDelay = 10000;
     short minDelay;
     unsigned long maxAdvances;
@@ -207,17 +201,17 @@ void findTreeSeed(short tableIndex, short slotIndex, const bool munchlaxTreeFlag
     for (short ab = 0; ab < 256; ab++) {
         for (short cd = 0; cd < hour; cd++) {
             for (short efgh = minDelay; efgh < maxDelay; efgh++) {
-                uint32_t seed = ((ab << 24) | (cd << 16)) + efgh;
+                const uint32_t seed = ((ab << 24) | (cd << 16)) + efgh;
                 uint32_t tempSeed = seed;
 
                 for (unsigned long advances = 0; advances < maxAdvances; advances++, advanceRNG(tempSeed)) {
                     uint32_t tempSeed2 = tempSeed;
 
-                    if (!isWantedTableCheck(tempSeed2, tableIndex, munchlaxTreeFlag)) {
+                    if (!isWantedTableCheck(tempSeed2, table, munchlaxFlag)) {
                         continue;
                     }
 
-                    if (isWantedEncounterSlotCheck(tempSeed2, tableIndex, slotIndex)) {
+                    if (isWantedEncounterSlotCheck(tempSeed2, table, slot)) {
                         printf("\n\nTarget seed: %08X | Target advances: %lu\n\n------------------------------------------------\n\n", seed, advances);
                         return;
                     }
@@ -231,12 +225,10 @@ int main() {
     uint32_t initialSeed;
     unsigned long currentAdvances;
     short tableIndex, slotIndex;
-    bool knownSeedFlag;
+    bool isMunchlaxTreeFlag, knownSeedFlag;
 
     while (true) {
         printMunchlaxTreeLocations();
-
-        bool isMunchlaxTreeFlag = sanitizeYesNoInput("Is it a Munchlax Tree? (y/n) ");
         getTreeTableSlotInput(tableIndex, slotIndex, isMunchlaxTreeFlag);
         getRNGInput(initialSeed, currentAdvances, knownSeedFlag);
 
