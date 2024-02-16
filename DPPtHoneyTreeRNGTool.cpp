@@ -58,8 +58,7 @@ void printMunchlaxTreeLocations() {
 
         for (short j = 0; j < i; j++) {
             if (treeLocationIndexes[j] == treeLocationIndexes[i]) {
-                treeLocationIndexes[i]++;
-                treeLocationIndexes[i] %= 21;
+                treeLocationIndexes[i] = (treeLocationIndexes[i] + 1) % 21;
             }
         }
     }
