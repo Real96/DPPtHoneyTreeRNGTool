@@ -49,12 +49,11 @@ void printMunchlaxTreeLocations() {
                                                                     "Valley Windworks", "Eterna Forest", "Fuego Ironworks", "Floaroma Meadow" };
 
     const bool knownSID = sanitizeYesNoInput("Do you know your SID? (y/n) ");
-    const short treeLimitNumber = knownSID ? 4 : 2;
-    uint32_t ids = getIDsInput(knownSID);
+    const uint32_t ids = getIDsInput(knownSID);
     static array<uint8_t, 4> treeLocationIndexes{};
 
-    for (short i = 0; i < treeLimitNumber; i++, ids >>= 8) {
-        treeLocationIndexes[i] = (ids & 0xFF) % 21;
+    for (short i = 0; i < knownSID ? 4 : 2; i++) {
+        treeLocationIndexes[i] = ((ids >> (8 * ((knownSID ? 3 : 1) - i))) & 0xFF) % 21;
 
         for (short j = 0; j < i; j++) {
             if (treeLocationIndexes[j] == treeLocationIndexes[i]) {
@@ -65,7 +64,7 @@ void printMunchlaxTreeLocations() {
 
     cout << "\n\nMunchlax tree locations:\n\n";
 
-    for (short i = 0; i < treeLimitNumber; i++) {
+    for (short i = 0; i < knownSID ? 4 : 2; i++) {
         cout << honeyTreeLocationNames[treeLocationIndexes[i]] << "\n";
     }
 
