@@ -52,7 +52,7 @@ void printMunchlaxTreeLocations() {
     const uint32_t ids = getIDsInput(knownSID);
     static array<uint8_t, 4> treeLocationIndexes{};
 
-    for (short i = 0; i < knownSID ? 4 : 2; i++) {
+    for (short i = 0; i < (knownSID ? 4 : 2); i++) {
         treeLocationIndexes[i] = ((ids >> (8 * ((knownSID ? 3 : 1) - i))) & 0xFF) % 21;
 
         for (short j = 0; j < i; j++) {
@@ -64,7 +64,7 @@ void printMunchlaxTreeLocations() {
 
     cout << "\n\nMunchlax tree locations:\n\n";
 
-    for (short i = 0; i < knownSID ? 4 : 2; i++) {
+    for (short i = 0; i < (knownSID ? 4 : 2); i++) {
         cout << honeyTreeLocationNames[treeLocationIndexes[i]] << "\n";
     }
 
