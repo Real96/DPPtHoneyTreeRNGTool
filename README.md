@@ -27,8 +27,8 @@ This tool will let you RNG abuse tree encounter slots in DPPt games
     <td rowspan="2"><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/versions/generation-viii/icons/446.png" title="Munchlax"></td>
   </tr>
   <tr align="center">
-    <td><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/versions/generation-viii/icons/266.png" title="Silcoon" width="40"></td>
-    <td><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/versions/generation-viii/icons/268.png" title="Cascoon" width="40"></td>
+    <td><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/versions/generation-viii/icons/266.png" title="Silcoon"></td>
+    <td><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/versions/generation-viii/icons/268.png" title="Cascoon"></td>
   </tr>
   <tr align="center">
     <td>20%</td>
