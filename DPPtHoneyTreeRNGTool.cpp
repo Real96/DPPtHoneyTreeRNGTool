@@ -73,7 +73,7 @@ void printMunchlaxTreeLocations() {
 
 bool sanitizeGameVersionInput() {
     string gameVersion;
-    const regex gameVersionRegex("^(dp|DP|Dp|dP|pt|Pt|PT)$");
+    const regex gameVersionRegex("^(dp|DP|Dp|dP|pt|PT|Pt|pT)$");
 
     while ((cout << "Game version? (dp/pt) ") && (!(cin >> gameVersion) || !regex_match(gameVersion, gameVersionRegex))) {
         cin.clear();
