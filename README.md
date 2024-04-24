@@ -113,7 +113,7 @@ This tool will let you RNG abuse tree encounter slots in DPPt games
   </tr>
 </table>
 
-## Note
+## Notes
 * Some IDs combos have only 3 different Munchlax trees instead of 4. For example, the combo TID `50844` and SID `29530` has the Munchlax trees in `Route 212 (South)`, `Route 210 (South)` and `Route 212 (North)` only.
 * Spreading honey on the last tree you spread it on will cause a 90% chance of getting the same encounter as last time. Be sure to spread honey on another tree before attempting the RNG abuse.
 
