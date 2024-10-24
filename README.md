@@ -6,8 +6,8 @@ This tool will let you RNG abuse tree encounter slots in DPPt games
   <tr align="center">
     <td><img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/cae6e50d-5d3b-4beb-bdea-c3bdfae8940a" title="D" width="10">
     <img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/bbe51f0e-417c-4359-b1c6-3e2e36a4798a" title="P" width="10"></td>
-    <td colspan="2">70% (30% if Munchlax tree)</td>
-    <td>30% (70% if Munchlax tree)</td>
+    <td colspan="2">70% (20% if Munchlax tree)</td>
+    <td>20% (70% if Munchlax tree)</td>
     <td>10% (9% if Munchlax tree)</td>
     <td>1% (if Munchlax tree)</td>
   </tr>
@@ -64,8 +64,8 @@ This tool will let you RNG abuse tree encounter slots in DPPt games
   <tr align="center">
     <td><img src="https://github.com/Real96/DPPtHoneyTreeRNGTool/assets/20956021/a5509f23-652f-4433-90f8-d97b7881802b" title="Pt" width="15"></td>
 </td>
-    <td>70% (30% if Munchlax tree)</td>
-    <td>30% (70% if Munchlax tree)</td>
+    <td>70% (20% if Munchlax tree)</td>
+    <td>20% (70% if Munchlax tree)</td>
     <td>10% (9% if Munchlax tree)</td>
     <td>1% (if Munchlax tree)</td>
   </tr>
