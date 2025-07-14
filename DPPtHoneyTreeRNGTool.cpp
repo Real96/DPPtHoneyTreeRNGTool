@@ -113,8 +113,8 @@ void printTableSlotIndexes(const bool munchlaxFlag) {
     cout << "\n";
 }
 
-void getTreeTableSlotInput(short &table, short &slot, bool &munchlaxFlag) {
-    munchlaxFlag = sanitizeYesNoInput("Is it a Munchlax Tree? (y/n) ");
+void getTreeTableSlotInput(short &table, short &slot) {
+    const bool munchlaxFlag = sanitizeYesNoInput("Is it a Munchlax Tree? (y/n) ");
     printTableSlotIndexes(munchlaxFlag);
     sanitizeInput<short>("Insert the wanted table index: ", table, 1, munchlaxFlag ? 3 : 2);
 
@@ -160,7 +160,7 @@ uint16_t getHighSeed(const uint32_t seed) {
     return seed >> 16;
 }
 
-bool isWantedTableCheck(uint32_t &seed, const short table, const bool munchlax) {
+bool isWantedTableCheck(uint32_t &seed, const short table) {
     static constexpr array<short, 5> tableThresholds{ 0, 1, 10, 30, 100 };
     const short tableRangeIndex = table == 3 ? 1 : 5 - table;
 
@@ -173,11 +173,11 @@ bool isWantedEncounterSlotCheck(uint32_t seed, const short table, const short sl
     return table == 3 || (getHighSeed(advanceRNG(seed) / 656) >= encounterSlotThresholds[slot] && getHighSeed(seed) / 656 < encounterSlotThresholds[slot - 1]);
 }
 
-void findTreePokemon(const short table, const short slot, const bool munchlaxFlag, uint32_t seed, unsigned long advances) {
+void findTreePokemon(const short table, const short slot, uint32_t seed, unsigned long advances) {
     for (;; advances++, advanceRNG(seed)) {
         uint32_t tempSeed = seed;
 
-        if (!isWantedTableCheck(tempSeed, table, munchlaxFlag)) {
+        if (!isWantedTableCheck(tempSeed, table)) {
             continue;
         }
 
@@ -188,7 +188,7 @@ void findTreePokemon(const short table, const short slot, const bool munchlaxFla
     }
 }
 
-void findTreeSeed(const short table, const short slot, const bool munchlaxFlag) {
+void findTreeSeed(const short table, const short slot) {
     const short hour = 24, maxDelay = 10000;
     short minDelay;
     unsigned long maxAdvances;
@@ -205,7 +205,7 @@ void findTreeSeed(const short table, const short slot, const bool munchlaxFlag) 
                 for (unsigned long advances = 0; advances < maxAdvances; advances++, advanceRNG(tempSeed)) {
                     uint32_t tempSeed2 = tempSeed;
 
-                    if (!isWantedTableCheck(tempSeed2, table, munchlaxFlag)) {
+                    if (!isWantedTableCheck(tempSeed2, table)) {
                         continue;
                     }
 
@@ -223,19 +223,19 @@ int main() {
     uint32_t initialSeed;
     unsigned long currentAdvances;
     short tableIndex, slotIndex;
-    bool isMunchlaxTreeFlag, knownSeedFlag;
+    bool knownSeedFlag;
 
     while (true) {
         printMunchlaxTreeLocations();
-        getTreeTableSlotInput(tableIndex, slotIndex, isMunchlaxTreeFlag);
+        getTreeTableSlotInput(tableIndex, slotIndex);
         getRNGInput(initialSeed, currentAdvances, knownSeedFlag);
 
         if (knownSeedFlag) {
             advanceRNG(initialSeed, currentAdvances);
-            findTreePokemon(tableIndex, slotIndex, isMunchlaxTreeFlag, initialSeed, currentAdvances);
+            findTreePokemon(tableIndex, slotIndex, initialSeed, currentAdvances);
             continue;
         }
 
-        findTreeSeed(tableIndex, slotIndex, isMunchlaxTreeFlag);
+        findTreeSeed(tableIndex, slotIndex);
     }
 }
